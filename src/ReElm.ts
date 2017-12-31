@@ -1,12 +1,4 @@
-import {
-  Record,
-  List,
-  Map,
-  Set,
-  OrderedMap,
-  OrderedSet,
-  Stack,
-} from 'immutable';
+import { Record, List, Map, Set, OrderedMap, OrderedSet, Stack, } from 'immutable';
 
 export type ModelValue =
   | string
@@ -50,28 +42,28 @@ export function createModel<Defaults extends Model>(defaults: Defaults): Immutab
 export type Update<M extends Model, Msg extends Switchable> = (model: ImmutableModel<M>, msg: Msg) => [ImmutableModel<M>, Cmd<M, Msg>];
 
 export interface AsyncImmutableModelUpdate<M extends Model, Result> {
-  type: 'AsyncModelUpdate';
-  promise: Promise<Result>;
-  updateFunction: (model: ImmutableModel<M>, result: Result) => ImmutableModel<M> | null;
-  retryFunction?: (model: ImmutableModel<M>, result: Result) => any;
+  readonly type: 'AsyncModelUpdate';
+  readonly promise: Promise<Result>;
+  readonly updateFunction: (model: ImmutableModel<M>, result: Result) => ImmutableModel<M> | null;
+  readonly retryFunction?: (model: ImmutableModel<M>, result: Result) => any;
 }
 
 export interface NoOp {
-  type: 'NoOp';
+  readonly type: 'NoOp';
 }
 
 export const NoOp: NoOp = { type: 'NoOp' };
 
 export interface BatchCmd<M extends Model, Msg extends Switchable> {
-  type: 'BatchCmd';
-  commands: Cmd<M, Msg>[];
+  readonly type: 'BatchCmd';
+  readonly commands: Cmd<M, Msg>[];
 }
 
 export interface AsyncCmd<M extends Model, Msg extends Switchable, Result> {
-  type: 'AsyncCmd';
-  promise: Promise<Result>;
-  successFunction: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => [ImmutableModel<M>, Cmd<M, Msg>] | null;
-  errorFunction?: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => any;
+  readonly type: 'AsyncCmd';
+  readonly promise: Promise<Result>;
+  readonly successFunction: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => [ImmutableModel<M>, Cmd<M, Msg>] | null;
+  readonly errorFunction?: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => any;
 }
 
 export type Cmd<M extends Model, Msg extends Switchable> =
@@ -83,33 +75,39 @@ export type Cmd<M extends Model, Msg extends Switchable> =
 export type Dispatch<Msg extends Switchable> = (msg: Msg | Msg[]) => void;
 
 export interface Switchable {
-  type: string;
+  readonly type: string;
 }
 
 export interface ViewProps<M extends Model, Msg extends Switchable, ComponentProps> {
-  model: ImmutableModel<M>;
-  dispatch: Dispatch<Msg>;
-  componentProps: ComponentProps;
+  readonly model: ImmutableModel<M>;
+  readonly dispatch: Dispatch<Msg>;
+  readonly componentProps: ComponentProps;
 }
 
 export interface Program<M extends Model, Msg extends Switchable> {
-  init: ImmutableModel<M>;
-  update: Update<M, Msg>;
-  view: React.SFC<ViewProps<M, Msg, any>>;
-  renderTarget: HTMLElement;
-  dev: boolean;
+  readonly init: ImmutableModel<M>,
+  readonly update: Update<M, Msg>,
+  readonly view: React.SFC<ViewProps<M, Msg, any>>,
+  readonly renderTarget: HTMLElement,
+  readonly dev: boolean,
+  readonly setupCallbacks?: SetupCallbacks<Msg>,
+  readonly teardownCallbacks?: TeardownCallbacks<Msg>,
 }
 
 export interface ViewStackframe<M extends Model, Msg extends Switchable, ComponentProps> {
-  view: React.SFC<ViewProps<M, Msg, ComponentProps>>;
-  componentProps?: ComponentProps;
+  readonly view: React.SFC<ViewProps<M, Msg, ComponentProps>>;
+  readonly componentProps?: ComponentProps;
 }
 
 export interface RootViewState<M extends Model> {
-  model: ImmutableModel<M>;
+  readonly model: ImmutableModel<M>;
 }
 
 export interface RootViewProps<M extends Model, Msg extends Switchable, PlatofrmSpecificArgs> {
-  program: Program<M, Msg>,
-  platformSpecificArgs?: PlatofrmSpecificArgs
+  readonly program: Program<M, Msg>,
+  readonly platformSpecificArgs?: PlatofrmSpecificArgs
 }
+
+export type SetupCallbacks<Msg extends Switchable> = (dispatch: Dispatch<Msg>) => void
+
+export type TeardownCallbacks<Msg extends Switchable> = (dispatch: Dispatch<Msg>) => void
