@@ -1,5 +1,11 @@
 import { Record, List, Map, Set, OrderedMap, OrderedSet, Stack, } from 'immutable';
 
+/**
+ * The possible types for a model. Unfortunately, typescript doesn't allow recursive union
+ * types. Ideally, this would be ImmutableModel<ModelValue> instead of ImmutableModel<any>
+ * but I can't find a nice way of doing this without making people use interfaces and wrapper
+ * objects.
+ */
 export type ModelValue =
   | string
   | null
@@ -45,6 +51,7 @@ export interface AsyncImmutableModelUpdate<M extends Model, Result> {
   readonly type: 'AsyncModelUpdate';
   readonly promise: Promise<Result>;
   readonly updateFunction: (model: ImmutableModel<M>, result: Result) => ImmutableModel<M> | null;
+  // TODO call this error function
   readonly retryFunction?: (model: ImmutableModel<M>, result: Result) => any;
 }
 
