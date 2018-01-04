@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Switchable, RootViewState, RootViewProps, Program, Cmd, ImmutableModel, Model } from './ReElm';
+import { Switchable, RootViewState, RootViewProps, Program, Cmd, ImmutableModel, Model } from './HathawayTypes';
 
 /**
  * Print to the console for debugging purposes.
