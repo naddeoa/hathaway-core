@@ -1,16 +1,19 @@
 {
-  "name": "reelm-core",
-  "version": "0.0.0",
-  "description": "reelm-core",
+  "name": "hathaway-core",
+  "version": "0.0.1",
+  "description": "The core view and data types for the hathaway react library",
   "license": "MIT",
   "repository": "",
   "author": {
-    "name": "",
-    "email": "",
+    "name": "Anthony Naddeo",
+    "email": "anthony.naddeo@gmail.com",
     "url": ""
   },
   "keywords": [
-    ""
+    "react",
+    "hathaway",
+    "minimal",
+    "simple"
   ],
   "files": [
     "lib"
