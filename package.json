@@ -29,10 +29,7 @@
     "watch": "npm run build -- --watch",
     "watch:test": "jest --watch"
   },
-  "dependencies": {
-    "immutable": "^3.8.2",
-    "react": "^16.2.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/immutable": "^3.8.7",
     "@types/jest": "^20.0.5",
@@ -47,7 +44,13 @@
     "ts-node": "^3.2.0",
     "tslint": "^5.0.0",
     "tslint-config-prettier": "^1.1.0",
-    "typescript": "^2.3.0"
+    "typescript": "^2.3.0",
+    "immutable": "^3.8.2",
+    "react": "^16.0.0"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "react": "^16.0.0"
   },
   "engines": {
     "node": ">=6.0.0"

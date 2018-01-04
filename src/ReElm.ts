@@ -1,4 +1,5 @@
 import { Record, List, Map, Set, OrderedMap, OrderedSet, Stack, } from 'immutable';
+import * as React from 'react';
 
 /**
  * The possible types for a model. Unfortunately, typescript doesn't allow recursive union
