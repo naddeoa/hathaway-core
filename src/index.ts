@@ -1,2 +1,2 @@
-export * from './ReElm';
-export {RootView} from './RootView';
+export * from './HathawayTypes';
+export { RootView } from './RootView';

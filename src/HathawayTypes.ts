@@ -49,29 +49,29 @@ export function createModel<Defaults extends Model>(defaults: Defaults): Immutab
 export type Update<M extends Model, Msg extends Switchable> = (model: ImmutableModel<M>, msg: Msg) => [ImmutableModel<M>, Cmd<M, Msg>];
 
 export interface AsyncImmutableModelUpdate<M extends Model, Result> {
-  readonly type: 'AsyncModelUpdate';
-  readonly promise: Promise<Result>;
-  readonly updateFunction: (model: ImmutableModel<M>, result: Result) => ImmutableModel<M> | null;
+  readonly type: 'AsyncModelUpdate',
+  readonly promise: Promise<Result>,
+  readonly updateFunction: (model: ImmutableModel<M>, result: Result) => ImmutableModel<M> | null,
   // TODO call this error function
-  readonly retryFunction?: (model: ImmutableModel<M>, result: Result) => any;
+  readonly retryFunction?: (model: ImmutableModel<M>, result: Result) => any
 }
 
 export interface NoOp {
-  readonly type: 'NoOp';
+  readonly type: 'NoOp'
 }
 
 export const NoOp: NoOp = { type: 'NoOp' };
 
 export interface BatchCmd<M extends Model, Msg extends Switchable> {
-  readonly type: 'BatchCmd';
-  readonly commands: Cmd<M, Msg>[];
+  readonly type: 'BatchCmd',
+  readonly commands: Cmd<M, Msg>[]
 }
 
 export interface AsyncCmd<M extends Model, Msg extends Switchable, Result> {
-  readonly type: 'AsyncCmd';
-  readonly promise: Promise<Result>;
-  readonly successFunction: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => [ImmutableModel<M>, Cmd<M, Msg>] | null;
-  readonly errorFunction?: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => any;
+  readonly type: 'AsyncCmd',
+  readonly promise: Promise<Result>,
+  readonly successFunction: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => [ImmutableModel<M>, Cmd<M, Msg>] | null,
+  readonly errorFunction?: (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => any
 }
 
 export type Cmd<M extends Model, Msg extends Switchable> =
@@ -87,13 +87,13 @@ export interface Switchable {
 }
 
 export interface ViewProps<M extends Model, Msg extends Switchable, ComponentProps> {
-  readonly model: ImmutableModel<M>;
-  readonly dispatch: Dispatch<Msg>;
-  readonly componentProps: ComponentProps;
+  readonly model: ImmutableModel<M>,
+  readonly dispatch: Dispatch<Msg>,
+  readonly componentProps: ComponentProps
 }
 
 export interface Program<M extends Model, Msg extends Switchable> {
-  readonly init: ImmutableModel<M>,
+  readonly init: ImmutableModel<M> | [ImmutableModel<M>, Cmd<M, Msg>],
   readonly update: Update<M, Msg>,
   readonly view: React.SFC<ViewProps<M, Msg, any>>,
   readonly renderTarget: HTMLElement,
@@ -103,12 +103,12 @@ export interface Program<M extends Model, Msg extends Switchable> {
 }
 
 export interface ViewStackframe<M extends Model, Msg extends Switchable, ComponentProps> {
-  readonly view: React.SFC<ViewProps<M, Msg, ComponentProps>>;
-  readonly componentProps?: ComponentProps;
+  readonly view: React.SFC<ViewProps<M, Msg, ComponentProps>>,
+  readonly componentProps?: ComponentProps
 }
 
 export interface RootViewState<M extends Model> {
-  readonly model: ImmutableModel<M>;
+  readonly model: ImmutableModel<M>
 }
 
 export interface RootViewProps<M extends Model, Msg extends Switchable, PlatofrmSpecificArgs> {

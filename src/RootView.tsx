@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Switchable, RootViewState, RootViewProps, Program, Cmd, ImmutableModel, Model  } from './ReElm';
+import { Switchable, RootViewState, RootViewProps, Program, Cmd, ImmutableModel, Model } from './ReElm';
 
 /**
  * Print to the console for debugging purposes.
@@ -21,7 +21,12 @@ export class RootView<Defaults extends Model, Msg extends Switchable> extends Re
     constructor({ program, platformSpecificArgs }: RootViewProps<Defaults, Msg, {}>) {
         super({ program, platformSpecificArgs });
         this.program = program;
-        this.state = { model: program.init };
+        if (Array.isArray(program.init)) {
+            this.state = { model: program.init[0] };
+            this.processCmd(program.init[1]);
+        } else {
+            this.state = { model: program.init };
+        }
 
         this.processCmd = this.processCmd.bind(this);
         this.dispatch = this.dispatch.bind(this);
