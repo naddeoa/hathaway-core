@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "description": "The core view and data types for the hathaway react library",
   "license": "MIT",
-  "repository": "",
+  "repository": "https://github.com/naddeoa/hathaway-core",
   "author": {
     "name": "Anthony Naddeo",
     "email": "anthony.naddeo@gmail.com",
-    "url": ""
+    "url": "https://github.com/naddeoa/hathaway-core"
   },
   "keywords": [
     "react",
