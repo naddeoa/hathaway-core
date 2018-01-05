@@ -20,7 +20,7 @@ export type ModelValue =
   | OrderedSet<any>
   | Stack<any>;
 
-export type Model = Record<any, ModelValue>;
+export type Model = {[s: string] : ModelValue};
 
 export interface ImmutableModel<Defaults extends Model> {
   get<T extends keyof Defaults>(value: T): Defaults[T];
