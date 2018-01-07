@@ -20,7 +20,9 @@ export type ModelValue =
   | OrderedSet<any>
   | Stack<any>;
 
-export type Model = {[s: string] : ModelValue};
+export interface Model {
+  [s: string]: ModelValue
+};
 
 export interface ImmutableModel<Defaults extends Model> {
   get<T extends keyof Defaults>(value: T): Defaults[T];
@@ -34,11 +36,11 @@ export function createModel<Defaults extends Model>(defaults: Defaults): Immutab
       params ? super(params) : super();
     }
 
-    get<T extends keyof Defaults>(value: T): Defaults[T] {
+    public get<T extends keyof Defaults>(value: T): Defaults[T] {
       return super.get(value);
     }
 
-    set<T extends keyof Defaults>(key: T, value: Defaults[T]): ImmutableModelImpl {
+    public set<T extends keyof Defaults>(key: T, value: Defaults[T]): ImmutableModelImpl {
       return super.set(key, value) as this;
     }
   }

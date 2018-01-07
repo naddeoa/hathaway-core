@@ -55,9 +55,9 @@ export type Args<Subject, Out, A, B, C, D, E> =
 
 
 
-export function combineArgs<A, B, C>(arg1: Args<A, B, any, any, any, any, any>, arg2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
-    let [fn1, fnArgs1] = arg1;
-    let [fn2, fnArgs2] = arg2;
+export function combineArgs<A, B, C>(args1: Args<A, B, any, any, any, any, any>, args2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
+    const [fn1, fnArgs1] = args1;
+    const [fn2, fnArgs2] = args2;
 
     let boundFn1: Fn0<A, B>;
     if (fnArgs1 === null) {
@@ -92,127 +92,127 @@ function reduceArgs(args: Args<any, any, any, any, any, any, any>[]): Args<any, 
 }
 
 export function chain2<A, B, C>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2]);
+    return reduceArgs([args1, args2]);
 }
 
 export function call2<A, B, C>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
     a: A): C {
 
-    return call(chain2(arg1, arg2), a);
+    return call(chain2(args1, args2), a);
 }
 
 export function chain3<A, B, C, D>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>): Args<A, D, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>): Args<A, D, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2, arg3]);
+    return reduceArgs([args1, args2, args3]);
 }
 
 export function call3<A, B, C, D>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
     a: A): D {
 
-    return call(chain3(arg1, arg2, arg3), a);
+    return call(chain3(args1, args2, args3), a);
 }
 
 export function chain4<A, B, C, D, E>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>): Args<A, E, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>): Args<A, E, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2, arg3, arg4]);
+    return reduceArgs([args1, args2, args3, args4]);
 }
 
 export function call4<A, B, C, D, E>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
     a: A): E {
 
-    return call(chain4(arg1, arg2, arg3, arg4), a);
+    return call(chain4(args1, args2, args3, args4), a);
 }
 
 export function chain5<A, B, C, D, E, F>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>): Args<A, F, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>): Args<A, F, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2, arg3, arg4, arg5]);
+    return reduceArgs([args1, args2, args3, args4, args5]);
 }
 
 export function call5<A, B, C, D, E, F>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>,
     a: A): F {
 
-    return call(chain5(arg1, arg2, arg3, arg4, arg5), a);
+    return call(chain5(args1, args2, args3, args4, args5), a);
 }
 
 export function chain6<A, B, C, D, E, F, G>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>,
-    arg6: Args<F, G, any, any, any, any, any>): Args<A, G, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>,
+    args6: Args<F, G, any, any, any, any, any>): Args<A, G, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2, arg3, arg4, arg5, arg6]);
+    return reduceArgs([args1, args2, args3, args4, args5, args6]);
 }
 
 export function call6<A, B, C, D, E, F, G>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>,
-    arg6: Args<F, G, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>,
+    args6: Args<F, G, any, any, any, any, any>,
     a: A): G {
 
-    return call(chain6(arg1, arg2, arg3, arg4, arg5, arg6), a);
+    return call(chain6(args1, args2, args3, args4, args5, args6), a);
 }
 
 export function chain7<A, B, C, D, E, F, G, H, I>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>,
-    arg6: Args<F, G, any, any, any, any, any>,
-    arg7: Args<H, I, any, any, any, any, any>): Args<A, I, any, any, any, any, any> {
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>,
+    args6: Args<F, G, any, any, any, any, any>,
+    args7: Args<H, I, any, any, any, any, any>): Args<A, I, any, any, any, any, any> {
 
-    return reduceArgs([arg1, arg2, arg3, arg4, arg5, arg6, arg7]);
+    return reduceArgs([args1, args2, args3, args4, args5, args6, args7]);
 }
 
 export function call7<A, B, C, D, E, F, G, H, I>(
-    arg1: Args<A, B, any, any, any, any, any>,
-    arg2: Args<B, C, any, any, any, any, any>,
-    arg3: Args<C, D, any, any, any, any, any>,
-    arg4: Args<D, E, any, any, any, any, any>,
-    arg5: Args<E, F, any, any, any, any, any>,
-    arg6: Args<F, G, any, any, any, any, any>,
-    arg7: Args<H, I, any, any, any, any, any>,
+    args1: Args<A, B, any, any, any, any, any>,
+    args2: Args<B, C, any, any, any, any, any>,
+    args3: Args<C, D, any, any, any, any, any>,
+    args4: Args<D, E, any, any, any, any, any>,
+    args5: Args<E, F, any, any, any, any, any>,
+    args6: Args<F, G, any, any, any, any, any>,
+    args7: Args<H, I, any, any, any, any, any>,
     a: A): I {
 
-    return call(chain7(arg1, arg2, arg3, arg4, arg5, arg6, arg7), a);
+    return call(chain7(args1, args2, args3, args4, args5, args6, args7), a);
 }
 
 export function call<Subject, Out>(args: Args<Subject, Out, any, any, any, any, any>, subject: Subject): Out {
-    let [fn, fnArgs] = args;
+    const [fn, fnArgs] = args;
 
     // This is the case for Fn0. A function that takes no extra args besides the subject.
     if (fnArgs === null) {
@@ -224,8 +224,8 @@ export function call<Subject, Out>(args: Args<Subject, Out, any, any, any, any, 
 }
 
 export function apply<Subject, Out>(args: Args<Subject, Out, any, any, any, any, any>[], subject: Subject): Out {
-    return args.reduce((accumulation: Subject, arg: Args<Subject, Out, any, any, any, any, any>) => {
-        let [fn, fnArgs] = arg;
+    return args.reduce((accumulation: Subject, currentArg: Args<Subject, Out, any, any, any, any, any>) => {
+        const [fn, fnArgs] = currentArg;
 
         // This is the case for Fn0. A function that takes no extra args besides the subject.
         if (fnArgs === null) {
