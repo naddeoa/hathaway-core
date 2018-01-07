@@ -1,8 +1,3 @@
-import { Model, ImmutableModel } from './HathawayTypes'
-
-export function modelSet<M extends Model, T extends keyof M>(key: T, value: M[T], model: ImmutableModel<M>): ImmutableModel<M> {
-    return model.set(key, value);
-}
 
 export type Fn0<Subject, Out> = (subject: Subject) => Out
 export type Fn1<Subject, Out, A> = (a: A, subject: Subject) => Out
