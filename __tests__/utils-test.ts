@@ -1,17 +1,16 @@
-import { call, call3, chain2, chain3, apply, arg, arg1, arg2, arg3, arg4, arg5, Args0, Args1, Args, Args2 } from '../src/Utils';
+import { chain, pipe, apply, f } from '../src/Utils';
 
 function sum(n1: number, n2: number): number {
   return n1 + n2;
 }
 
-
 test('Single fn', () => {
-  const actualSum = apply([
-    arg1(sum, 1),
-    arg1(sum, 1),
-    arg1(sum, 1),
-    arg1(sum, 1)
-  ], 2)
+  const actualSum = apply(2, [
+    f(sum, 1),
+    f(sum, 1),
+    f(sum, 1),
+    f(sum, 1)
+  ])
 
   expect(actualSum).toBe(6);
 });
@@ -22,12 +21,12 @@ test('Make sure order respected', () => {
     return n1 === 2 ? 0 : n1;
   }
 
-  const actualSum = apply([
-    arg(zeroOutIf2),
-    arg1(sum, 1),
-    arg1(sum, 1),
-    arg1(sum, 1)
-  ], 2)
+  const actualSum = apply(2, [
+    f(zeroOutIf2),
+    f(sum, 1),
+    f(sum, 1),
+    f(sum, 1)
+  ])
 
   expect(actualSum).toBe(3);
 });
@@ -48,20 +47,20 @@ test('Chain works same as call', () => {
     return `${weirdThing.newThing}`;
   }
 
-  const arga: Args1<string, number, number> = arg1(a, 1);
-  const argb: Args1<number, { newThing: number }, number> = arg1(b, 2);
+  const cc = chain(
+    f(a, 1),
+    f(b, 2),
+    f(c));
 
-  const actual = call(chain3<string, number, WeirdThing, string>(
-    arg1(a, 1),
-    arg1(b, 2),
-    arg(c)),
-    '2');
+  const actual = pipe('2', chain(
+    f(a, 1),
+    f(b, 2),
+    c, ));
 
-  const callActual = call3<string, number, WeirdThing, string>(
-    arg1(a, 1),
-    arg1(b, 2),
-    arg(c),
-    '2');
+  const callActual = pipe('2',
+    f(a, 1),
+    f(b, 2),
+    c);
 
   const expected = '2'
 
@@ -93,13 +92,13 @@ test('Different arg lengths', () => {
   }
 
 
-  const actualSum = apply([
-    arg1(arity1, '1'),
-    arg2(arity2, '1', '2'),
-    arg3(arity3, '1', '2', '3'),
-    arg4(arity4, '1', '2', '3', '4'),
-    arg5(arity5, '1', '2', '3', '4', '5'),
-  ], 'start')
+  const actualSum = apply('start', [
+    f(arity1, '1'),
+    f(arity2, '1', '2'),
+    f(arity3, '1', '2', '3'),
+    f(arity4, '1', '2', '3', '4'),
+    f(arity5, '1', '2', '3', '4', '5'),
+  ])
 
   expect(actualSum).toBe('start112123123412345');
 });

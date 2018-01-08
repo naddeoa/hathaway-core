@@ -1,6 +1,6 @@
 {
   "name": "hathaway-core",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The core view and data types for the hathaway react library",
   "license": "MIT",
   "repository": "https://github.com/naddeoa/hathaway-core",

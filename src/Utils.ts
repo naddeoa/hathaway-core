@@ -1,257 +1,100 @@
+export function apply<Subject>(subject: Subject, args: Array<(subject: Subject) => Subject>): Subject {
+    return args.reduce((accumulation: Subject, currentFn) => currentFn(accumulation), subject);
+}
 
-export type Fn0<Subject, Out> = (subject: Subject) => Out
-export type Fn1<Subject, Out, A> = (a: A, subject: Subject) => Out
-export type Fn2<Subject, Out, A, B> = (a: A, b: B, subject: Subject) => Out
-export type Fn3<Subject, Out, A, B, C> = (a: A, b: B, c: C, subject: Subject) => Out
-export type Fn4<Subject, Out, A, B, C, D> = (a: A, b: B, c: C, d: D, subject: Subject) => Out
-export type Fn5<Subject, Out, A, B, C, D, E> = (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out
+export function pipe<Subject, Out>(subject: Subject, fn1: (subject: Subject) => Out): Out;
+export function pipe<Subject, Out, A>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => Out): Out;
+export function pipe<Subject, Out, A, B>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => Out): Out;
+export function pipe<Subject, Out, A, B, C>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => Out): Out;
+export function pipe<Subject, Out, A, B, C, D>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => Out): Out;
+export function pipe<Subject, Out, A, B, C, D, E>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => E, fn6: (e: E) => Out): Out;
+export function pipe<Subject, Out, A, B, C, D, E, F>(subject: Subject, fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => E, fn6: (e: E) => F, fn7: (f: F) => Out): Out;
 
-
-export type Fn<Subject, Out, A, B, C, D, E> =
-    Fn0<Subject, Out>
-    | Fn1<Subject, Out, A>
-    | Fn2<Subject, Out, A, B>
-    | Fn3<Subject, Out, A, B, C>
-    | Fn4<Subject, Out, A, B, C, D>
-    | Fn5<Subject, Out, A, B, C, D, E>
-
-export type Args0<Subject, Out> = [
-    Fn0<Subject, Out>, null
-]
-
-export type Args1<Subject, Out, A> = [
-    Fn1<Subject, Out, A>, [A]
-]
-
-export type Args2<Subject, Out, A, B> = [
-    Fn2<Subject, Out, A, B>, [A, B]
-]
-
-export type Args3<Subject, Out, A, B, C> = [
-    Fn3<Subject, Out, A, B, C>, [A, B, C]
-]
-
-export type Args4<Subject, Out, A, B, C, D> = [
-    Fn4<Subject, Out, A, B, C, D>, [A, B, C, D]
-]
-
-export type Args5<Subject, Out, A, B, C, D, E> = [
-    Fn5<Subject, Out, A, B, C, D, E>, [A, B, C, D, E]
-]
-
-
-export type Args<Subject, Out, A, B, C, D, E> =
-    Args0<Subject, Out>
-    | Args1<Subject, Out, A>
-    | Args2<Subject, Out, A, B>
-    | Args3<Subject, Out, A, B, C>
-    | Args4<Subject, Out, A, B, C, D>
-    | Args5<Subject, Out, A, B, C, D, E>
-
-
-
-export function combineArgs<A, B, C>(args1: Args<A, B, any, any, any, any, any>, args2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
-    const [fn1, fnArgs1] = args1;
-    const [fn2, fnArgs2] = args2;
-
-    let boundFn1: Fn0<A, B>;
-    if (fnArgs1 === null) {
-        boundFn1 = fn1 as Fn0<A, B>;
-    } else {
-        fnArgs1.unshift(null)
-        boundFn1 = Function.bind.apply(fn1, fnArgs1);
+export function pipe<Subject, Out, A, B, C, D, E, F>(subject: Subject, fn1: (subject: Subject) => A, fn2?: (a: A) => B, fn3?: (b: B) => C, fn4?: (c: C) => D, fn5?: (d: D) => E, fn6?: (e: E) => F, fn7?: (f: F) => Out): Out {
+    if (fn7 !== undefined && fn6 !== undefined && fn5 !== undefined && fn4 !== undefined && fn3 !== undefined && fn2 !== undefined) {
+        return fn7(fn6(fn5(fn4(fn3(fn2(fn1(subject)))))));
     }
 
-    let boundFn2: Fn0<B, C>;
-    if (fnArgs2 === null) {
-        boundFn2 = fn2 as Fn0<B, C>;
-    } else {
-        fnArgs2.unshift(null)
-        boundFn2 = Function.bind.apply(fn2, fnArgs2);
+    if (fn6 !== undefined && fn5 !== undefined && fn4 !== undefined && fn3 !== undefined && fn2 !== undefined) {
+        return fn6(fn5(fn4(fn3(fn2(fn1(subject)))))) as any;
+    }
+    if (fn5 !== undefined && fn4 !== undefined && fn3 !== undefined && fn2 !== undefined) {
+        return fn5(fn4(fn3(fn2(fn1(subject))))) as any;
+    }
+    if (fn4 !== undefined && fn3 !== undefined && fn2 !== undefined) {
+        return fn4(fn3(fn2(fn1(subject)))) as any;
+    }
+    if (fn3 !== undefined && fn2 !== undefined) {
+        return fn3(fn2(fn1(subject))) as any;
+    }
+    if (fn2 !== undefined) {
+        return fn2(fn1(subject)) as any;
     }
 
-    const newFn: Fn0<A, C> = (a: A) => boundFn2(boundFn1(a));
-    return [newFn, null];
+    return fn1(subject) as any;
 }
 
-function reduceArgs(args: Args<any, any, any, any, any, any, any>[]): Args<any, any, any, any, any, any, any> {
-    if (args.length === 0) {
-        throw new Error("You have to provide at least one args to the chain.");
+export function compose<Subject, Out, A>(fn1: (subject: Subject) => A, fn2: (a: A) => Out): (subject: Subject) => Out;
+export function compose<Subject, Out, A, B>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => Out): (subject: Subject) => Out;
+export function compose<Subject, Out, A, B, C>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => Out): (subject: Subject) => Out;
+export function compose<Subject, Out, A, B, C, D>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => Out): (subject: Subject) => Out;
+export function compose<Subject, Out, A, B, C, D, E>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => E, fn6: (e: E) => Out): (subject: Subject) => Out;
+export function compose<Subject, Out, A, B, C, D, E, F>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3: (b: B) => C, fn4: (c: C) => D, fn5: (d: D) => E, fn6: (e: E) => F, fn7: (f: F) => Out): (subject: Subject) => Out;
+
+export function compose<Subject, Out, A, B, C, D, E, F>(fn1: (subject: Subject) => A, fn2: (a: A) => B, fn3?: (b: B) => C, fn4?: (c: C) => D, fn5?: (d: D) => E, fn6?: (e: E) => F, fn7?: (f: F) => Out): (subject: Subject) => Out {
+    if (fn7 !== undefined && fn6 !== undefined && fn5 !== undefined && fn4 !== undefined && fn3 !== undefined) {
+        return (subject: Subject) => fn7(fn6(fn5(fn4(fn3(fn2(fn1(subject))))))) as any;
     }
 
-    if (args.length === 1) {
-        return args[0];
+    if (fn6 !== undefined && fn5 !== undefined && fn4 !== undefined && fn3 !== undefined) {
+        return (subject: Subject) => fn6(fn5(fn4(fn3(fn2(fn1(subject)))))) as any;
     }
 
-    return args.reduce(combineArgs);
-}
-
-export function chain2<A, B, C>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>): Args<A, C, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2]);
-}
-
-export function call2<A, B, C>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    a: A): C {
-
-    return call(chain2(args1, args2), a);
-}
-
-export function chain3<A, B, C, D>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>): Args<A, D, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2, args3]);
-}
-
-export function call3<A, B, C, D>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    a: A): D {
-
-    return call(chain3(args1, args2, args3), a);
-}
-
-export function chain4<A, B, C, D, E>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>): Args<A, E, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2, args3, args4]);
-}
-
-export function call4<A, B, C, D, E>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    a: A): E {
-
-    return call(chain4(args1, args2, args3, args4), a);
-}
-
-export function chain5<A, B, C, D, E, F>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>): Args<A, F, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2, args3, args4, args5]);
-}
-
-export function call5<A, B, C, D, E, F>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>,
-    a: A): F {
-
-    return call(chain5(args1, args2, args3, args4, args5), a);
-}
-
-export function chain6<A, B, C, D, E, F, G>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>,
-    args6: Args<F, G, any, any, any, any, any>): Args<A, G, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2, args3, args4, args5, args6]);
-}
-
-export function call6<A, B, C, D, E, F, G>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>,
-    args6: Args<F, G, any, any, any, any, any>,
-    a: A): G {
-
-    return call(chain6(args1, args2, args3, args4, args5, args6), a);
-}
-
-export function chain7<A, B, C, D, E, F, G, H, I>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>,
-    args6: Args<F, G, any, any, any, any, any>,
-    args7: Args<H, I, any, any, any, any, any>): Args<A, I, any, any, any, any, any> {
-
-    return reduceArgs([args1, args2, args3, args4, args5, args6, args7]);
-}
-
-export function call7<A, B, C, D, E, F, G, H, I>(
-    args1: Args<A, B, any, any, any, any, any>,
-    args2: Args<B, C, any, any, any, any, any>,
-    args3: Args<C, D, any, any, any, any, any>,
-    args4: Args<D, E, any, any, any, any, any>,
-    args5: Args<E, F, any, any, any, any, any>,
-    args6: Args<F, G, any, any, any, any, any>,
-    args7: Args<H, I, any, any, any, any, any>,
-    a: A): I {
-
-    return call(chain7(args1, args2, args3, args4, args5, args6, args7), a);
-}
-
-export function call<Subject, Out>(args: Args<Subject, Out, any, any, any, any, any>, subject: Subject): Out {
-    const [fn, fnArgs] = args;
-
-    // This is the case for Fn0. A function that takes no extra args besides the subject.
-    if (fnArgs === null) {
-        return fn.call(fn, subject);
-    } else {
-        fnArgs.push(subject);
-        return fn.apply(fn, fnArgs);
+    if (fn5 !== undefined && fn4 !== undefined && fn3 !== undefined) {
+        return (subject: Subject) => fn5(fn4(fn3(fn2(fn1(subject))))) as any;
     }
+
+    if (fn4 !== undefined && fn3 !== undefined) {
+        return (subject: Subject) => fn4(fn3(fn2(fn1(subject)))) as any;
+    }
+
+    if (fn3 !== undefined) {
+        return (subject: Subject) => fn3(fn2(fn1(subject))) as any;
+    }
+
+    return (subject: Subject) => fn2(fn1(subject)) as any;
 }
 
-export function apply<Subject, Out>(args: Args<Subject, Out, any, any, any, any, any>[], subject: Subject): Out {
-    return args.reduce((accumulation: Subject, currentArg: Args<Subject, Out, any, any, any, any, any>) => {
-        const [fn, fnArgs] = currentArg;
 
-        // This is the case for Fn0. A function that takes no extra args besides the subject.
-        if (fnArgs === null) {
-            return fn.call(fn, accumulation);
-        } else {
-            fnArgs.push(accumulation);
-            return fn.apply(fn, fnArgs);
-        }
-    }, subject);
-}
+export function f<Subject, Out>(fn: (subject: Subject) => Out): (subject: Subject) => Out;
 
-export function arg<Subject, Out>(fn: Fn0<Subject, Out>): Args0<Subject, Out> {
-    return [fn, null];
-}
+export function f<Subject, Out, A>(fn: (a: A, subject: Subject) => Out, a: A): (subject: Subject) => Out;
 
-export function arg1<Subject, Out, A>(fn: Fn1<Subject, Out, A>, a: A): Args1<Subject, Out, A> {
-    return [fn, [a]];
-}
+export function f<Subject, Out, A, B>(fn: (a: A, b: B, subject: Subject) => Out, a: A, b: B): (subject: Subject) => Out;
 
-export function arg2<Subject, Out, A, B>(fn: Fn2<Subject, Out, A, B>, a: A, b: B): Args2<Subject, Out, A, B> {
-    return [fn, [a, b]];
-}
+export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A, b: B, c: C): (subject: Subject) => Out;
 
-export function arg3<Subject, Out, A, B, C>(fn: Fn3<Subject, Out, A, B, C>, a: A, b: B, c: C): Args3<Subject, Out, A, B, C> {
-    return [fn, [a, b, c]];
-}
+export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B, c: C, d: D): (subject: Subject) => Out;
 
-export function arg4<Subject, Out, A, B, C, D>(fn: Fn4<Subject, Out, A, B, C, D>, a: A, b: B, c: C, d: D): Args4<Subject, Out, A, B, C, D> {
-    return [fn, [a, b, c, d]];
-}
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C, d: D, e: E): (subject: Subject) => Out;
 
-export function arg5<Subject, Out, A, B, C, D, E>(fn: Fn5<Subject, Out, A, B, C, D, E>, a: A, b: B, c: C, d: D, e: E): Args5<Subject, Out, A, B, C, D, E> {
-    return [fn, [a, b, c, d, e]];
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a?: A, b?: B, c?: C, d?: D, e?: E): (subject: Subject) => Out {
+    if (e === undefined && d === undefined && c === undefined && b === undefined && a === undefined) {
+        return fn as any;
+    }
+
+    if (e === undefined && d === undefined && c === undefined && b === undefined) {
+        return fn.bind(fn, a);
+    }
+    if (e === undefined && d === undefined && c === undefined) {
+        return fn.bind(fn, a, b);
+    }
+    if (e === undefined && d === undefined) {
+        return fn.bind(fn, a, b, c);
+    }
+    if (e === undefined) {
+        return fn.bind(fn, a, b, c, d);
+    }
+
+    return fn.bind(fn, a, b, c, d, e);
 }
