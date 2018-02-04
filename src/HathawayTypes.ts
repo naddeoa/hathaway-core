@@ -98,7 +98,6 @@ export interface Program<M extends Model, Msg extends Switchable> {
   readonly init: ImmutableModel<M> | [ImmutableModel<M>, Cmd<M, Msg>],
   readonly update: Update<M, Msg>,
   readonly view: React.SFC<ViewProps<M, Msg, any>>,
-  readonly renderTarget: HTMLElement,
   readonly dev: boolean,
   readonly setupCallbacks?: SetupCallbacks<Msg>,
   readonly teardownCallbacks?: TeardownCallbacks<Msg>,
