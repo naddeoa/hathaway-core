@@ -70,24 +70,13 @@ export class RootView<Defaults extends Model, Msg extends Switchable> extends Re
         }
     }
 
-    processCmd(cmd: Cmd<Defaults, Msg>): boolean {
+    processCmd(cmd: Cmd<Defaults, Msg>): null {
         debugLog(this.program, 'PROCESSING CMD', cmd);
 
         switch (cmd.type) {
             case 'BatchCmd':
                 cmd.commands.forEach((c: Cmd<Defaults, Msg>) => this.processCmd(c))
-                return true;
-
-            case 'AsyncModelUpdate':
-                cmd.promise.then((result: any) => {
-                    const model = cmd.updateFunction(this.state.model, result);
-                    if (model === null) {
-                        cmd.retryFunction && cmd.retryFunction(this.state.model, result);
-                    } else {
-                        this.updateModel(model);
-                    }
-                });
-                return true;
+                return null;
 
             case 'AsyncCmd':
                 cmd.promise.then((result: any) => {
@@ -99,11 +88,20 @@ export class RootView<Defaults extends Model, Msg extends Switchable> extends Re
                         this.updateModel(model);
                         this.processCmd(cmd)
                     }
-                });
-                return true;
+                }).catch((result: any) => {
+                    if (cmd.errorFunction) {
+                        const errorResult = cmd.errorFunction(this.dispatch, this.state.model, result);
+                        if (errorResult !== null) {
+                            const [model, cmd] = errorResult;
+                            this.updateModel(model);
+                            this.processCmd(cmd)
+                        }
+                    }
+                })
+                return null;
 
             case 'NoOp':
-                return true;
+                return null;
 
         }
     }
