@@ -48,7 +48,12 @@ export function createModel<Defaults extends Model>(defaults: Defaults): Immutab
   return new ImmutableModelImpl();
 }
 
-export type Update<M extends Model, Msg extends Switchable> = (model: ImmutableModel<M>, msg: Msg) => [ImmutableModel<M>, Cmd<M, Msg>];
+export type Update<M extends Model, Msg extends Switchable> = (model: ImmutableModel<M>, msg: Msg) => UpdateResult<M, Msg>;
+
+export type UpdateResult<M extends Model, Msg extends Switchable> = {
+  model: ImmutableModel<M>,
+  cmd?: Cmd<M, Msg>
+}
 
 export interface NoOp {
   readonly type: 'NoOp'
@@ -61,11 +66,11 @@ export interface BatchCmd<M extends Model, Msg extends Switchable> {
   readonly commands: Cmd<M, Msg>[]
 }
 
-export interface AsyncCmd<M extends Model, Msg extends Switchable, Result> {
+export interface AsyncCmd<M extends Model, Msg extends Switchable, Result, ErrorResult> {
   readonly type: 'AsyncCmd',
   readonly promise: Promise<Result>,
   readonly successFunction: AsyncCmdResultFunction<M, Msg, Result>,
-  readonly errorFunction?: AsyncCmdResultFunction<M, Msg, Result>
+  readonly errorFunction?: AsyncCmdResultFunction<M, Msg, ErrorResult>
 }
 
 /**
@@ -77,20 +82,26 @@ export interface AsyncCmd<M extends Model, Msg extends Switchable, Result> {
  * if it were returned from the update function.
  * @param errorFunction Like successFunction but called when the promise throws.
  */
-export function asyncCmd<M extends Model, Msg extends Switchable, Result>(
+export function asyncCmd<M extends Model, Msg extends Switchable, Result, ErrorResult>(
   promise: Promise<Result>,
   successFunction: AsyncCmdResultFunction<M, Msg, Result>,
-  errorFunction: AsyncCmdResultFunction<M, Msg, Result>): AsyncCmd<M, Msg, Result> {
+  errorFunction: AsyncCmdResultFunction<M, Msg, ErrorResult>): AsyncCmd<M, Msg, Result, ErrorResult> {
 
   return { type: 'AsyncCmd', promise, successFunction, errorFunction }
 }
 
-export type AsyncCmdResultFunction<M extends Model, Msg extends Switchable, Result> = (dispatch: Dispatch<Msg>, model: ImmutableModel<M>, result: Result) => [ImmutableModel<M>, Cmd<M, Msg>] | null;
+export type AsyncCmdResultFunction<M extends Model, Msg extends Switchable, Result> = (input: CmdResultArgs<M, Msg, Result>) => UpdateResult<M, Msg> | null;
+
+export type CmdResultArgs<M extends Model, Msg extends Switchable, Result> = {
+  dispatch: Dispatch<Msg>,
+  model: ImmutableModel<M>,
+  result: Result
+}
 
 export type Cmd<M extends Model, Msg extends Switchable> =
   | NoOp
   | BatchCmd<M, Msg>
-  | AsyncCmd<M, Msg, any>;
+  | AsyncCmd<M, Msg, any, any>;
 
 export type Dispatch<Msg extends Switchable> = (msg: Msg | Msg[]) => void;
 

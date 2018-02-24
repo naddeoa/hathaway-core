@@ -59,14 +59,14 @@ export class RootView<Defaults extends Model, Msg extends Switchable> extends Re
             let updatedModel = this.state.model;
             let commands: Cmd<Defaults, Msg>[] = [];
             for (let m of msg) {
-                const [model, cmd] = this.program.update(updatedModel, m);
+                const { model, cmd } = this.program.update(updatedModel, m);
                 updatedModel = model;
-                commands.push(cmd);
+                cmd && commands.push(cmd);
             }
             this.updateModel(updatedModel, () => this.processCmd({ type: 'BatchCmd', commands }));
         } else {
-            const [model, cmd] = this.program.update(this.state.model, msg);
-            this.updateModel(model, () => this.processCmd(cmd));
+            const { model, cmd } = this.program.update(this.state.model, msg);
+            this.updateModel(model, () => cmd && this.processCmd(cmd));
         }
     }
 
@@ -80,21 +80,21 @@ export class RootView<Defaults extends Model, Msg extends Switchable> extends Re
 
             case 'AsyncCmd':
                 cmd.promise.then((result: any) => {
-                    const successFunctionResult = cmd.successFunction(this.dispatch, this.state.model, result);
+                    const successFunctionResult = cmd.successFunction({ dispatch: this.dispatch, model: this.state.model, result });
                     if (successFunctionResult === null) {
-                        cmd.errorFunction && cmd.errorFunction(this.dispatch, this.state.model, result);
+                        cmd.errorFunction && cmd.errorFunction({ dispatch: this.dispatch, model: this.state.model, result });
                     } else {
-                        const [model, cmd] = successFunctionResult;
+                        const { model, cmd } = successFunctionResult;
                         this.updateModel(model);
-                        this.processCmd(cmd)
+                        cmd && this.processCmd(cmd)
                     }
                 }).catch((result: any) => {
                     if (cmd.errorFunction) {
-                        const errorResult = cmd.errorFunction(this.dispatch, this.state.model, result);
+                        const errorResult = cmd.errorFunction({ dispatch: this.dispatch, model: this.state.model, result });
                         if (errorResult !== null) {
-                            const [model, cmd] = errorResult;
+                            const { model, cmd } = errorResult;
                             this.updateModel(model);
-                            this.processCmd(cmd)
+                            cmd && this.processCmd(cmd)
                         }
                     }
                 })
