@@ -71,22 +71,22 @@ export function f<Subject, Out>(fn: (subject: Subject) => Out): (subject: Subjec
 export function f<Subject, Out, A>(fn: (a: A, subject: Subject) => Out, a: A): (subject: Subject) => Out;
 
 export function f<Subject, Out, A, B>(fn: (a: A, b: B, subject: Subject) => Out, a: A, b: B): (subject: Subject) => Out;
-export function f<Subject, Out, A, B>(fn: (a: A, b: B, subject: Subject) => Out, a: A): (subject: Subject, b: B) => Out;
+export function f<Subject, Out, A, B>(fn: (a: A, b: B, subject: Subject) => Out, a: A): (b: B, subject: Subject) => Out;
 
 export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A, b: B, c: C): (subject: Subject) => Out;
-export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A, b: B): (subject: Subject, c: C) => Out;
-export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A): (subject: Subject, b: B, c: C) => Out;
+export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A, b: B): (c: C, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C>(fn: (a: A, b: B, c: C, subject: Subject) => Out, a: A): (b: B, c: C, subject: Subject) => Out;
 
 export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B, c: C, d: D): (subject: Subject) => Out;
-export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B, c: C): (subject: Subject, d: D) => Out;
-export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B): (subject: Subject, c: C, d: D) => Out;
-export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A): (subject: Subject, b: B, c: C, d: D) => Out;
+export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B, c: C): (d: D, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A, b: B): (c: C, d: D, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C, D>(fn: (a: A, b: B, c: C, d: D, subject: Subject) => Out, a: A): (b: B, c: C, d: D, subject: Subject) => Out;
 
 export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C, d: D, e: E): (subject: Subject) => Out;
-export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C, d: D): (subject: Subject, e: E) => Out;
-export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C): (subject: Subject, d: D, e: E) => Out;
-export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B): (subject: Subject, c: C, d: D, e: E) => Out;
-export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A): (subject: Subject, b: B, c: C, d: D, e: E) => Out;
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C, d: D): (e: E, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B, c: C): (d: D, e: E, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A, b: B): (c: C, d: D, e: E, subject: Subject) => Out;
+export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a: A): (b: B, c: C, d: D, e: E, subject: Subject) => Out;
 
 export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E, subject: Subject) => Out, a?: A, b?: B, c?: C, d?: D, e?: E): (subject: Subject) => Out {
     if (e === undefined && d === undefined && c === undefined && b === undefined && a === undefined) {
@@ -108,3 +108,4 @@ export function f<Subject, Out, A, B, C, D, E>(fn: (a: A, b: B, c: C, d: D, e: E
 
     return fn.bind(fn, a, b, c, d, e);
 }
+
